@@ -7,12 +7,6 @@ const ProductDetail = () => {
   const [productDetailData, setProductDetailData] = useState({});
   const params = useParams();
 
-  // useEffect(() => {
-  //   fetch('/data/teaListData.json')
-  //     .then(response => response.json())
-  //     .then(data => setProductDetailData(data));
-  // }, [params.id]);
-
   useEffect(() => {
     fetch(`${APIS.items}/${params.id}`)
       .then(response => response.json())
@@ -40,6 +34,7 @@ const ProductDetail = () => {
   };
 
   if (Object.keys(productDetailData).length === 0) return null;
+  const productInfo = productDetailData.items[0];
 
   return (
     <div className="productDetail">
@@ -48,44 +43,37 @@ const ProductDetail = () => {
           <div className="productImg">
             <img
               className="productImgUrl"
-              src={productDetailData.items[0].image_url}
+              src={productInfo.image_url}
               alt="teabag"
             />
           </div>
         </div>
         <div className="productDetailInfo">
           <div className="productDetailHeader">
-            <div className="productSort">
-              {productDetailData.items[0].category_name}
-            </div>
-            <h2 className="productName">{productDetailData.items[0].name}</h2>
-            <p className="productExplain">
-              {productDetailData.items[0].description}
-            </p>
+            <div className="productSort">{productInfo.category_name}</div>
+            <h2 className="productName">{productInfo.name}</h2>
+            <p className="productExplain">{productInfo.description}</p>
           </div>
           <div className="productDetailContent">
             <h4 className="productDetailContentTitle">Tasting Notes</h4>
             <p className="productDetailContentText">
-              {productDetailData.items[0].tasting_notes[0]},{' '}
-              {productDetailData.items[0].tasting_notes[1]}
+              {productInfo.tasting_notes[0]}, {productInfo.tasting_notes[1]}
             </p>
           </div>
           <div className="productDetailContent">
             <h4 className="productDetailContentTitle">향</h4>
-            <p className="productDetailContentText">
-              {productDetailData.items[0].name}
-            </p>
+            <p className="productDetailContentText">{productInfo.name}</p>
           </div>
           <div className="productDetailContent">
             <h4 className="productDetailContentTitle">용량</h4>
             <p className="productDetailContentText">
-              {productDetailData.items[0].teabag_size}g
+              {productInfo.teabag_size}g
             </p>
           </div>
           <div className="addCart">
             <button className="addCartButton" onClick={addToCart}>
               카트에 추가하기 - ₩{' '}
-              {productDetailData.items[0].price
+              {productInfo.price
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             </button>
